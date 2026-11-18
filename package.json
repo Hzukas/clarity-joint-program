@@ -1,0 +1,12 @@
+{
+  "name": "clarity-joint-program",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Clarity Gardens store-exclusive pre-roll sell sheet",
+  "scripts": {
+    "split": "node tools/split-tubes.js"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^0.1.65"
+  }
+}
