@@ -20,7 +20,7 @@ The gear at the top right opens a panel to change the four endpoint prices. Slid
 
 ## Appearance
 
-The gear also has an Appearance tab. Pick a box (page title, left panel, right panel, the pricing cards inside the right panel, or the tube frame) and set its background, border color and width, text color, and text size (70% to 150%). The page updates as you change things. Save keeps the look in that browser only; Cancel (or Esc) puts everything back; Restore built-in on that tab returns to the shared default; each Default button next to a control returns just that setting. Secondary text tones (labels, captions) are derived from the text and background colors you pick. The stylesheet defaults are listed in TARGETS inside index.html.
+The gear also has an Appearance tab. Click a box on the page (page title, left panel, right panel, a pricing card inside the right panel, or the tube frame), or pick it from the dropdown, and set its background, border color and width, text color, and text size (70% to 150%). The page updates as you change things. Save keeps the look in that browser only; Cancel (or Esc) puts everything back; Restore built-in on that tab returns to the shared default; each Default button next to a control returns just that setting. Secondary text tones (labels, captions) are derived from the text and background colors you pick. The stylesheet defaults are listed in TARGETS inside index.html.
 
 ### Making a look the default for everyone
 
