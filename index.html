@@ -55,13 +55,13 @@
     h1, h2 { font-weight: 400; margin: 0; }
     h1 {
       font-family: var(--display); text-transform: uppercase; line-height: 1; letter-spacing: -.01em;
-      font-size: calc(clamp(1.8rem, 3.6vw, 3.2rem) * var(--ts, 1));
+      font-size: calc(clamp(1.8rem, 3.6vw, 3.2rem) * var(--ts, 1) * var(--tx-ts, 1));
     }
-    h2 { font-family: var(--mono); font-size: calc(.75rem * var(--ts, 1)); letter-spacing: .22em; text-transform: uppercase; color: var(--dim); margin-bottom: 14px; }
+    h2 { font-family: var(--mono); font-size: calc(.75rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .22em; text-transform: uppercase; color: var(--tx-ink, var(--dim)); margin-bottom: 14px; }
     .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .kicker {
-      display: inline-block; font-family: var(--mono); font-size: calc(.7rem * var(--ts, 1)); letter-spacing: .2em; text-transform: uppercase;
-      padding: 4px 12px; border-radius: 999px; background: var(--grad); color: #140a1f; font-weight: 700; margin-bottom: 12px;
+      display: inline-block; font-family: var(--mono); font-size: calc(.7rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .2em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 999px; background: var(--grad); color: var(--tx-ink, #140a1f); font-weight: 700; margin-bottom: 12px;
     }
 
     /* Header */
@@ -79,8 +79,8 @@
       background: var(--t-bg, transparent); border: var(--t-bw, 0px) solid var(--t-border, transparent);
     }
     .title.boxed { padding: 22px 26px 18px; margin-top: 10px; }
-    .title h1 { color: var(--t-ink, var(--text)); }
-    .title p { color: var(--t-muted, var(--muted)); margin: 10px auto 0; max-width: 62ch; font-size: calc(1rem * var(--ts, 1)); }
+    .title h1 { color: var(--tx-ink, var(--t-ink, var(--text))); }
+    .title p { color: var(--tx-ink, var(--t-muted, var(--muted))); margin: 10px auto 0; max-width: 62ch; font-size: calc(1rem * var(--ts, 1) * var(--tx-ts, 1)); }
 
     /* Three columns: why | tubes | pricing */
     main .wrap {
@@ -109,8 +109,8 @@
       display: flex; flex-direction: column; justify-content: center;
       box-shadow: 0 20px 60px rgba(0,0,0,.45);
     }
-    .panel h2 { color: var(--p-dim); }
-    .panel .why p { color: var(--p-muted); }
+    .panel h2 { color: var(--tx-ink, var(--p-dim)); }
+    .panel .why p { color: var(--tx-ink, var(--p-muted)); }
     .panel .types-label { color: var(--p-dim); }
     .panel .types span { border-color: var(--p-line); color: var(--p-muted); }
     .panel .types .sativa { border-color: #e2731a; color: #c45e0b; }
@@ -118,20 +118,22 @@
     .panel .types .hybrid { border-color: #3aa63a; color: #2a8f2a; }
     .panel .sku, .panel .blend { background: var(--p-card); border-color: var(--p-line); border-width: var(--k-bw, 1px); }
     .panel .sku { border-left-width: max(4px, var(--k-bw, 1px)); }
-    .panel .sku-head .big small, .panel .sku-head .what { color: var(--p-dim); }
-    .panel .field label, .panel .blend-head label, .panel .blend-ends { color: var(--p-dim); }
+    .panel .sku-head .big small { color: var(--p-dim); }
+    .panel .sku-head .what { color: var(--tx-ink, var(--p-dim)); }
+    .panel .field label, .panel .blend-head label, .panel .blend-ends { color: var(--tx-ink, var(--p-dim)); }
     .panel .blend-head output small { color: var(--p-muted); }
     .panel .money::before { color: var(--p-dim); }
     .panel .money input {
-      background: var(--p-card); border-color: var(--p-line-2); color: var(--p-ink);
+      background: var(--p-card); border-color: var(--p-line-2); color: var(--tx-ink, var(--p-ink));
     }
     .panel .money input::placeholder { color: var(--p-dim); }
-    .panel .money input[readonly] { background: var(--p-field); color: var(--p-ink); }
+    .panel .money input[readonly] { background: var(--p-field); color: var(--tx-ink, var(--p-ink)); }
     .panel .money input[readonly]:focus { border-color: var(--p-line-2); }
     .panel .margin { background: var(--p-field); border-color: var(--p-line); }
-    .panel .margin.empty .pct { color: var(--p-dim); }
+    .panel .margin.empty .pct { color: var(--tx-ink, var(--p-dim)); }
+    .panel .margin .usd { color: var(--tx-ink, var(--p-muted)); }
     .panel .margin.good .pct { color: #1f8f3a; }
-    .panel .price-foot { color: var(--p-dim); }
+    .panel .price-foot { color: var(--tx-ink, var(--p-dim)); }
     .panel .price-foot button { border-color: var(--p-line-2); color: var(--p-muted); }
     .panel .price-foot button:hover { border-color: var(--pink); color: var(--p-ink); }
     .panel .blend input[type="range"]::-webkit-slider-thumb { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
@@ -144,17 +146,17 @@
       width: 46px; height: 46px; border-radius: 11px; display: grid; place-items: center;
       background: var(--c, var(--grad)); color: #140a1f; font-family: var(--display); font-size: 1.05rem;
     }
-    .why strong { display: block; font-size: calc(clamp(1.25rem, 1.5vw, 1.45rem) * var(--ts, 1)); line-height: 1.2; margin-bottom: 5px; }
-    .why p { margin: 0; color: var(--muted); font-size: calc(1.08rem * var(--ts, 1)); line-height: 1.45; }
+    .why strong { display: block; color: var(--tx-ink, inherit); font-size: calc(clamp(1.25rem, 1.5vw, 1.45rem) * var(--ts, 1) * var(--tx-ts, 1)); line-height: 1.2; margin-bottom: 5px; }
+    .why p { margin: 0; color: var(--tx-ink, var(--muted)); font-size: calc(1.08rem * var(--ts, 1) * var(--tx-ts, 1)); line-height: 1.45; }
     .types { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
     .types span {
-      font-family: var(--mono); font-size: calc(.66rem * var(--ts, 1)); letter-spacing: .18em; text-transform: uppercase;
+      font-family: var(--mono); font-size: calc(.66rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .18em; text-transform: uppercase;
       padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted);
     }
     .types .sativa { border-color: var(--orange); color: var(--orange); }
     .types .indica { border-color: var(--purple); color: #b9a2ff; }
     .types .hybrid { border-color: var(--green); color: #8ae08a; }
-    .types-label { font-family: var(--mono); font-size: calc(.66rem * var(--ts, 1)); letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin-top: 22px; }
+    .types-label { font-family: var(--mono); font-size: calc(.66rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .18em; text-transform: uppercase; color: var(--dim); margin-top: 22px; }
     .types-label + .types { margin-top: 8px; }
 
     /* Pricing */
@@ -163,16 +165,16 @@
       border-left: 4px solid var(--c, var(--pink)); margin-bottom: 12px;
     }
     .sku-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-    .sku-head .big { font-family: var(--display); font-size: calc(1.35rem * var(--ts, 1)); line-height: 1; white-space: nowrap; }
-    .sku-head .big small { font-family: var(--body); font-weight: 600; font-size: calc(.68rem * var(--ts, 1)); color: var(--muted); letter-spacing: .04em; margin-left: 6px; }
-    .sku-head .what { font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+    .sku-head .big { color: var(--tx-ink, inherit); font-family: var(--display); font-size: calc(1.35rem * var(--ts, 1) * var(--tx-ts, 1)); line-height: 1; white-space: nowrap; }
+    .sku-head .big small { font-family: var(--body); font-weight: 600; font-size: calc(.68rem * var(--ts, 1) * var(--tx-ts, 1)); color: var(--muted); letter-spacing: .04em; margin-left: 6px; }
+    .sku-head .what { font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--tx-ink, var(--dim)); }
     .rows { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-    .field label { display: block; font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-bottom: 4px; white-space: nowrap; }
+    .field label { display: block; font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--tx-ink, var(--dim)); margin-bottom: 4px; white-space: nowrap; }
     .money { position: relative; }
     .money::before { content: "$"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--dim); font-weight: 600; pointer-events: none; }
     .money input {
       width: 100%; padding: 9px 8px 9px 22px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel-2);
-      color: var(--text); font-weight: 700; font-size: calc(1.02rem * var(--ts, 1)); -moz-appearance: textfield;
+      color: var(--tx-ink, var(--text)); font-weight: 700; font-size: calc(1.02rem * var(--ts, 1) * var(--tx-ts, 1)); -moz-appearance: textfield;
     }
     .money input::-webkit-outer-spin-button, .money input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     .money input:focus { outline: 2px solid var(--pink); outline-offset: 1px; border-color: transparent; }
@@ -181,14 +183,14 @@
       border-radius: 8px; padding: 7px 10px; background: rgba(255,255,255,.04); border: 1px solid var(--line);
       display: flex; flex-direction: column; justify-content: center; min-height: 42px;
     }
-    .margin .pct { font-family: var(--display); font-size: calc(1.15rem * var(--ts, 1)); line-height: 1; }
-    .margin .usd { font-family: var(--mono); font-size: calc(.66rem * var(--ts, 1)); letter-spacing: .1em; color: var(--muted); margin-top: 3px; }
-    .margin.empty .pct { color: var(--dim); font-size: calc(.95rem * var(--ts, 1)); font-family: var(--body); font-weight: 600; }
+    .margin .pct { color: var(--tx-ink, inherit); font-family: var(--display); font-size: calc(1.15rem * var(--ts, 1) * var(--tx-ts, 1)); line-height: 1; }
+    .margin .usd { font-family: var(--mono); font-size: calc(.66rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .1em; color: var(--tx-ink, var(--muted)); margin-top: 3px; }
+    .margin.empty .pct { color: var(--tx-ink, var(--dim)); font-size: calc(.95rem * var(--ts, 1) * var(--tx-ts, 1)); font-family: var(--body); font-weight: 600; }
     .margin.good .pct { color: #8ae08a; }
-    .price-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1)); letter-spacing: .1em; color: var(--dim); }
+    .price-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .1em; color: var(--tx-ink, var(--dim)); }
     .price-foot button {
       background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: 4px 10px; cursor: pointer;
-      font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1)); letter-spacing: .14em; text-transform: uppercase;
+      font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .14em; text-transform: uppercase;
     }
     .price-foot button:hover { border-color: var(--pink); color: var(--text); }
     .money input[readonly] { background: rgba(255,255,255,.04); color: var(--text); cursor: default; }
@@ -199,9 +201,9 @@
       background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px 10px; margin-bottom: 12px;
     }
     .blend-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; }
-    .blend-head label { font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
-    .blend-head output { font-family: var(--display); font-size: calc(1rem * var(--ts, 1)); white-space: nowrap; }
-    .blend-head output small { font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1)); letter-spacing: .1em; color: var(--muted); margin-left: 6px; }
+    .blend-head label { font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--tx-ink, var(--dim)); }
+    .blend-head output { color: var(--tx-ink, inherit); font-family: var(--display); font-size: calc(1rem * var(--ts, 1) * var(--tx-ts, 1)); white-space: nowrap; }
+    .blend-head output small { font-family: var(--mono); font-size: calc(.62rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .1em; color: var(--muted); margin-left: 6px; }
     .blend input[type="range"] {
       -webkit-appearance: none; appearance: none; width: 100%; height: 8px; border-radius: 999px; margin: 8px 0 6px; cursor: pointer;
       background: linear-gradient(90deg, #a9865a 0%, #c9a46c 35%, var(--green) 100%); outline: none;
@@ -214,7 +216,7 @@
       width: 16px; height: 16px; border-radius: 50%; background: var(--text); border: 3px solid var(--pink); box-shadow: 0 2px 10px rgba(0,0,0,.5);
     }
     .blend input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--pink); outline-offset: 2px; }
-    .blend-ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: calc(.6rem * var(--ts, 1)); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+    .blend-ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: calc(.6rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .12em; text-transform: uppercase; color: var(--tx-ink, var(--dim)); }
 
     /* Gear + settings dialog */
     .gear {
@@ -279,6 +281,10 @@
     /* Picking a box on the page: hover shows a dashed outline, the selected box a solid one. */
     body.picking .title, body.picking .col-left.panel, body.picking .col-right.panel,
     body.picking .col-right .sku, body.picking .col-right .blend, body.picking .showcase { cursor: pointer; }
+    body.picking .kicker, body.picking .title h1, body.picking .title p, body.picking .panel h2, body.picking .why strong, body.picking .why p,
+    body.picking .sku-head .big, body.picking .sku-head .what, body.picking .col-right .field label, body.picking .blend-head label, body.picking .blend-ends,
+    body.picking .col-right .money input, body.picking .blend-head output, body.picking .col-right .margin, body.picking .price-foot,
+    body.picking .caption .name, body.picking .caption .store { cursor: pointer; }
     .look-hover { outline: 2px dashed var(--pink); outline-offset: 4px; }
     .look-selected, .look-selected.look-hover { outline: 3px solid var(--pink); outline-offset: 4px; }
 
@@ -313,10 +319,10 @@
     .slide img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
     .stage-empty { color: var(--dim); font-family: var(--mono); font-size: .8rem; letter-spacing: .1em; text-align: center; padding: 20px; margin: 0; }
     .caption { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; min-height: 30px; }
-    .caption .name { font-weight: 700; color: var(--s-ink, inherit); font-size: calc(1rem * var(--ts, 1)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-    .caption .store { font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--s-dim, var(--dim)); display: block; }
+    .caption .name { font-weight: 700; color: var(--tx-ink, var(--s-ink, inherit)); font-size: calc(1rem * var(--ts, 1) * var(--tx-ts, 1)); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+    .caption .store { font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .14em; text-transform: uppercase; color: var(--tx-ink, var(--s-dim, var(--dim))); display: block; }
     .type-pill {
-      flex: none; font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1)); letter-spacing: .18em; text-transform: uppercase;
+      flex: none; font-family: var(--mono); font-size: calc(.64rem * var(--ts, 1) * var(--tx-ts, 1)); letter-spacing: .18em; text-transform: uppercase;
       padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--text);
     }
     .type-pill[data-type="sativa"] { border-color: var(--orange); color: var(--orange); }
@@ -508,25 +514,41 @@
           </div>
 
           <div id="tab-look" role="tabpanel" aria-labelledby="tab-btn-look" hidden>
-            <p class="hint">Click a box on the page (or pick one here), then change its colors and text. The page updates as you go.</p>
+            <p class="hint">Click a box or a line of text on the page (or pick one here), then change it. The page updates as you go.</p>
             <label class="look-target">
               <span class="h">Editing</span>
               <select id="look-target">
-                <option value="title">Page title</option>
-                <option value="left">Left panel: why exclusive</option>
-                <option value="right">Right panel: pricing</option>
-                <option value="cards">Pricing cards (inside the right panel)</option>
-                <option value="show">Tube frame</option>
+                <optgroup label="Boxes">
+                  <option value="title">Page title box</option>
+                  <option value="left">Left panel: why exclusive</option>
+                  <option value="right">Right panel: pricing</option>
+                  <option value="cards">Pricing cards (inside the right panel)</option>
+                  <option value="show">Tube frame</option>
+                </optgroup>
+                <optgroup label="Text">
+                  <option value="kicker">Kicker pill: Escape the price war</option>
+                  <option value="headline">Headline</option>
+                  <option value="lead">Lead line under the headline</option>
+                  <option value="why-head">Left heading: Why exclusive wins</option>
+                  <option value="point-titles">Point titles (01, 02, 03)</option>
+                  <option value="point-text">Point text</option>
+                  <option value="price-head">Right heading: Two SKUs</option>
+                  <option value="sku-names">SKU names (2 x 0.7g, 2 x 1g)</option>
+                  <option value="field-labels">Small labels in the pricing cards</option>
+                  <option value="values">Prices and margin</option>
+                  <option value="footnote">Pricing footnote</option>
+                  <option value="caption">Tube caption</option>
+                </optgroup>
               </select>
             </label>
             <div class="look-grid">
-              <span class="h">Background</span>
-              <div class="look-row">
+              <span class="h" data-row="box">Background</span>
+              <div class="look-row" data-row="box">
                 <input type="color" id="look-bg" aria-label="Background color">
                 <button type="button" class="undo" data-undo="bg">Default</button>
               </div>
-              <span class="h">Border</span>
-              <div class="look-row">
+              <span class="h" data-row="box">Border</span>
+              <div class="look-row" data-row="box">
                 <input type="color" id="look-border" aria-label="Border color">
                 <input type="number" id="look-bw" min="0" max="8" step="1" inputmode="numeric" aria-label="Border width in pixels"><span class="unit">px</span>
                 <button type="button" class="undo" data-undo="border">Default</button>
@@ -732,14 +754,28 @@
         left:  { els: ['.col-left.panel'],                  bg: '#f6f2ea', border: '#ffffff', bw: 1, ink: '#1b1424' },
         right: { els: ['.col-right.panel'],                 bg: '#f6f2ea', border: '#ffffff', bw: 1, ink: '#1b1424' },
         cards: { els: ['.col-right .blend', '.col-right .sku'], bg: '#ffffff', border: '#e2dbcf', bw: 1, ink: '#1b1424' },
-        show:  { els: ['.showcase'],                        bg: '#1a1430', border: '#322a52', bw: 1, ink: '#f4f0ff' }
+        show:  { els: ['.showcase'],                        bg: '#1a1430', border: '#322a52', bw: 1, ink: '#f4f0ff' },
+        // Text targets: color and size only.
+        'kicker':       { kind: 'text', els: ['.kicker'],            ink: '#140a1f' },
+        'headline':     { kind: 'text', els: ['.title h1'],          ink: '#f4f0ff' },
+        'lead':         { kind: 'text', els: ['.title p'],           ink: '#b9b1d2' },
+        'why-head':     { kind: 'text', els: ['.col-left h2'],       ink: '#8a8198' },
+        'point-titles': { kind: 'text', els: ['.why strong'],        ink: '#1b1424' },
+        'point-text':   { kind: 'text', els: ['.why p'],             ink: '#5b5370' },
+        'price-head':   { kind: 'text', els: ['.col-right h2'],      ink: '#8a8198' },
+        'sku-names':    { kind: 'text', els: ['.sku-head .big'],     ink: '#1b1424' },
+        'field-labels': { kind: 'text', els: ['.col-right .field label', '.blend-head label', '.blend-ends', '.sku-head .what'], ink: '#8a8198' },
+        'values':       { kind: 'text', els: ['.col-right .money input', '.blend-head output', '.col-right .margin'], ink: '#1b1424' },
+        'footnote':     { kind: 'text', els: ['.price-foot'],        ink: '#8a8198' },
+        'caption':      { kind: 'text', els: ['.caption .name', '.caption .store'], ink: '#f4f0ff' }
       };
+      function isText(id) { return TARGETS[id].kind === 'text'; }
       var IDS = Object.keys(TARGETS);
       // Every inline property the editor may set, so a clear is complete.
       var PROPS = ['--t-bg', '--t-border', '--t-bw', '--t-ink', '--t-muted',
                    '--p-surface', '--p-border', '--p-bw', '--p-ink', '--p-muted', '--p-dim',
                    '--p-card', '--p-line', '--p-line-2', '--p-field', '--k-bw',
-                   '--s-bg', '--s-border', '--s-bw', '--s-ink', '--s-dim', '--ts'];
+                   '--s-bg', '--s-border', '--s-bw', '--s-ink', '--s-dim', '--ts', '--tx-ink', '--tx-ts'];
 
       function els(id) {
         return TARGETS[id].els.reduce(function (acc, sel) {
@@ -758,6 +794,14 @@
       function applyOne(id, v, look) {
         var t = TARGETS[id];
         v = v || {};
+        if (isText(id)) {
+          els(id).forEach(function (el) {
+            el.style.removeProperty('--tx-ink'); el.style.removeProperty('--tx-ts');
+            if (has(v, 'ink')) el.style.setProperty('--tx-ink', v.ink);
+            if (has(v, 'ts') && v.ts !== 100) el.style.setProperty('--tx-ts', String(v.ts / 100));
+          });
+          return;
+        }
         els(id).forEach(function (el) {
           PROPS.forEach(function (p) { el.style.removeProperty(p); });
           el.classList.remove('boxed', 'custom-border');
@@ -801,11 +845,11 @@
         if (!raw || typeof raw !== 'object') return out;
         IDS.forEach(function (id) {
           var v = raw[id]; if (!v || typeof v !== 'object') return;
-          var o = {};
-          if (HEX.test(v.bg || '')) o.bg = v.bg.toLowerCase();
-          if (HEX.test(v.border || '')) o.border = v.border.toLowerCase();
+          var o = {}, text = isText(id);
+          if (!text && HEX.test(v.bg || '')) o.bg = v.bg.toLowerCase();
+          if (!text && HEX.test(v.border || '')) o.border = v.border.toLowerCase();
           if (HEX.test(v.ink || '')) o.ink = v.ink.toLowerCase();
-          var bw = parseInt(v.bw, 10); if (bw >= 0 && bw <= 8) o.bw = bw;
+          var bw = parseInt(v.bw, 10); if (!text && bw >= 0 && bw <= 8) o.bw = bw;
           var ts = parseInt(v.ts, 10); if (ts >= 70 && ts <= 150) o.ts = ts;
           if (Object.keys(o).length) out[id] = o;
         });
@@ -856,7 +900,7 @@
       var active = 'pricing';
 
       // Click a box on the page to edit it. Innermost first, so a card wins over the panel around it.
-      var PICK_ORDER = ['cards', 'show', 'title', 'left', 'right'];
+      var PICK_ORDER = IDS.filter(isText).concat(['cards', 'show', 'title', 'left', 'right']);
       function targetAt(node) {
         if (!node || !node.closest || dlg.contains(node)) return null;
         for (var i = 0; i < PICK_ORDER.length; i++) {
@@ -905,12 +949,14 @@
       // "Default" for a control is the shared default's value when look.js sets one, else the stylesheet's.
       function dflt(id, k) { var b = BASE[id] || {}; return has(b, k) ? b[k] : (k === 'ts' ? 100 : TARGETS[id][k]); }
       function isDefault(id, v, k) { var b = BASE[id] || {}; return has(b, k) ? v[k] === b[k] : !has(v, k); }
+      var boxRows = Array.prototype.slice.call(document.querySelectorAll('[data-row="box"]'));
       function fill() {
         if (!draft) return;
-        var id = sel.value, v = draft[id] || {};
-        inBg.value = has(v, 'bg') ? v.bg : dflt(id, 'bg');
-        inBorder.value = has(v, 'border') ? v.border : dflt(id, 'border');
-        inBw.value = has(v, 'bw') ? v.bw : dflt(id, 'bw');
+        var id = sel.value, v = draft[id] || {}, text = isText(id);
+        boxRows.forEach(function (el) { el.hidden = text; });
+        inBg.value = !text && has(v, 'bg') ? v.bg : (dflt(id, 'bg') || '#000000');
+        inBorder.value = !text && has(v, 'border') ? v.border : (dflt(id, 'border') || '#000000');
+        inBw.value = !text && has(v, 'bw') ? v.bw : (dflt(id, 'bw') || 0);
         inInk.value = has(v, 'ink') ? v.ink : dflt(id, 'ink');
         inTs.value = has(v, 'ts') ? v.ts : dflt(id, 'ts');
         outTs.textContent = inTs.value + '%';
