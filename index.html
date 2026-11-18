@@ -270,6 +270,9 @@
     .look-row .undo:hover { color: var(--text); border-color: var(--pink); }
     .look-row .undo:disabled, .look-row .undo:disabled:hover { opacity: .35; cursor: default; color: var(--dim); border-color: var(--line); }
     .look-note { color: var(--dim); font-size: .8rem; margin: 12px 0 0; }
+    .look-export { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--dim); font-size: .8rem; }
+    .look-export .dlg-btn { flex: none; white-space: nowrap; }
+    .look-export code { font-family: var(--mono); color: var(--muted); }
     /* While editing the look, sit in the corner with a light backdrop so the page shows the changes live. */
     dialog.settings.look-mode { width: min(480px, calc(100vw - 32px)); margin: auto 24px 24px auto; }
     dialog.settings.look-mode::backdrop { background: rgba(5, 3, 12, .2); }
@@ -537,6 +540,10 @@
               </div>
             </div>
             <p class="look-note">Save keeps the look on this device. Cancel puts everything back.</p>
+            <div class="look-export">
+              <button type="button" class="dlg-btn" id="look-export">Export for everyone</button>
+              <span>Downloads <code>look.js</code> with the look shown now. Put it in the sheet's folder in place of the old one and push. It becomes the default for everyone with the link; a look saved on a device still wins there.</span>
+            </div>
           </div>
 
           <div class="dlg-actions">
@@ -560,6 +567,7 @@
   </footer>
 
   <script src="labels.js"></script>
+  <script src="look.js"></script>
   <script>
     /* ---------------- Tube carousel: conveyor slide, out left / in from right ---------------- */
     (function () {
@@ -801,17 +809,36 @@
       }
       function load() {
         var raw = null;
-        try { raw = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
-        return clean(raw);
+        try { raw = localStorage.getItem(KEY); if (raw !== null) raw = JSON.parse(raw); } catch (e) { raw = null; }
+        return raw === null ? null : clean(raw);
       }
       function save(look) {
-        try {
-          if (Object.keys(look).length) localStorage.setItem(KEY, JSON.stringify(look)); else localStorage.removeItem(KEY);
-        } catch (e) {}
+        try { localStorage.setItem(KEY, JSON.stringify(look)); } catch (e) {}
+      }
+      // The downloadable look.js: the shared default for everyone who opens the sheet.
+      function exportText(look) {
+        return '/* Default appearance for everyone who opens the sell sheet.\n' +
+          '   Made with the gear > Appearance > "Export for everyone" on ' + new Date().toISOString().slice(0, 10) + '.\n' +
+          '   To change it: set the look in the sheet, export again, replace this file, and push.\n' +
+          '   A look saved on a device (gear > Appearance > Save) overrides this there. */\n' +
+          'window.CG_LOOK = ' + JSON.stringify(look, null, 2) + ';\n';
+      }
+      function download(name, text) {
+        var blob = new Blob([text], { type: 'text/javascript' });
+        if (!window.URL || typeof URL.createObjectURL !== 'function') return false;
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = name;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+        return true;
       }
 
+      // look.js (window.CG_LOOK) is the shared default for everyone; a look saved on this
+      // device replaces it as a whole. No device save (null) means: show the shared default.
+      var BASE = clean(window.CG_LOOK);
       var saved = load();
-      applyAll(saved);
+      function effective() { return saved === null ? BASE : saved; }
+      applyAll(effective());
       var draft = null;
 
       // Dialog controls
@@ -839,18 +866,21 @@
 
       function cur() { return draft[sel.value] || (draft[sel.value] = {}); }
       function tidy() { if (draft[sel.value] && !Object.keys(draft[sel.value]).length) delete draft[sel.value]; }
+      // "Default" for a control is the shared default's value when look.js sets one, else the stylesheet's.
+      function dflt(id, k) { var b = BASE[id] || {}; return has(b, k) ? b[k] : (k === 'ts' ? 100 : TARGETS[id][k]); }
+      function isDefault(id, v, k) { var b = BASE[id] || {}; return has(b, k) ? v[k] === b[k] : !has(v, k); }
       function fill() {
         if (!draft) return;
-        var t = TARGETS[sel.value], v = draft[sel.value] || {};
-        inBg.value = has(v, 'bg') ? v.bg : t.bg;
-        inBorder.value = has(v, 'border') ? v.border : t.border;
-        inBw.value = has(v, 'bw') ? v.bw : t.bw;
-        inInk.value = has(v, 'ink') ? v.ink : t.ink;
-        inTs.value = has(v, 'ts') ? v.ts : 100;
+        var id = sel.value, v = draft[id] || {};
+        inBg.value = has(v, 'bg') ? v.bg : dflt(id, 'bg');
+        inBorder.value = has(v, 'border') ? v.border : dflt(id, 'border');
+        inBw.value = has(v, 'bw') ? v.bw : dflt(id, 'bw');
+        inInk.value = has(v, 'ink') ? v.ink : dflt(id, 'ink');
+        inTs.value = has(v, 'ts') ? v.ts : dflt(id, 'ts');
         outTs.textContent = inTs.value + '%';
         undos.forEach(function (b) {
           var k = b.dataset.undo;
-          b.disabled = k === 'border' ? !(has(v, 'border') || has(v, 'bw')) : !has(v, k);
+          b.disabled = k === 'border' ? (isDefault(id, v, 'border') && isDefault(id, v, 'bw')) : isDefault(id, v, k);
         });
       }
       function changed() { tidy(); applyAll(draft); fill(); }
@@ -867,23 +897,31 @@
         var ts = parseInt(inTs.value, 10);
         if (ts >= 70 && ts <= 150) { cur().ts = ts; changed(); }
       });
+      function toDefault(id, v, k) { var b = BASE[id] || {}; if (has(b, k)) v[k] = b[k]; else delete v[k]; }
       undos.forEach(function (b) {
         b.addEventListener('click', function () {
-          var v = cur(), k = b.dataset.undo;
-          if (k === 'border') { delete v.border; delete v.bw; } else delete v[k];
+          var id = sel.value, v = cur(), k = b.dataset.undo;
+          if (k === 'border') { toDefault(id, v, 'border'); toDefault(id, v, 'bw'); } else toDefault(id, v, k);
           changed();
         });
+      });
+      document.getElementById('look-export').addEventListener('click', function () {
+        if (!draft) return;
+        tidy();
+        download('look.js', exportText(clean(draft)));
       });
 
       return {
         // Called by the dialog owner.
-        begin: function () { draft = copy(saved); showTab('pricing'); fill(); },
-        cancel: function () { if (draft) { draft = null; applyAll(saved); } },
+        begin: function () { draft = copy(effective()); showTab('pricing'); fill(); },
+        cancel: function () { if (draft) { draft = null; applyAll(effective()); } },
         commit: function () { if (draft) { saved = clean(draft); draft = null; applyAll(saved); save(saved); } },
-        restore: function () { if (draft) { draft = {}; changed(); } },
+        // Restore built-in: back to the shared default (the stylesheet when look.js is empty).
+        restore: function () { if (draft) { draft = copy(BASE); changed(); } },
         isLookTab: function () { return active === 'look'; },
         // For tests and tinkering.
-        get: function () { return copy(saved); }
+        get: function () { return copy(effective()); },
+        exportText: function () { return exportText(clean(draft || effective())); }
       };
     })();
 

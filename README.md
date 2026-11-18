@@ -20,7 +20,11 @@ The gear at the top right opens a panel to change the four endpoint prices. Slid
 
 ## Appearance
 
-The gear also has an Appearance tab. Pick a box (page title, left panel, right panel, the pricing cards inside the right panel, or the tube frame) and set its background, border color and width, text color, and text size (70% to 150%). The page updates as you change things. Save keeps the look in that browser only; Cancel (or Esc) puts everything back; Restore built-in on that tab clears every custom setting, and Save then makes the clear stick. Each Default button next to a control returns just that setting. Secondary text tones (labels, captions) are derived from the text and background colors you pick. The stylesheet defaults are listed in TARGETS inside index.html.
+The gear also has an Appearance tab. Pick a box (page title, left panel, right panel, the pricing cards inside the right panel, or the tube frame) and set its background, border color and width, text color, and text size (70% to 150%). The page updates as you change things. Save keeps the look in that browser only; Cancel (or Esc) puts everything back; Restore built-in on that tab returns to the shared default; each Default button next to a control returns just that setting. Secondary text tones (labels, captions) are derived from the text and background colors you pick. The stylesheet defaults are listed in TARGETS inside index.html.
+
+### Making a look the default for everyone
+
+look.js holds the shared default (window.CG_LOOK). It starts empty, which means the stylesheet look. To change it: set the look in the sheet, click **Export for everyone** on the Appearance tab, and a new look.js downloads with the look shown at that moment (saved or not). Replace look.js in this folder with it and push; about a minute later everyone who opens the link sees that look. A look saved on a device (Save) replaces the shared default on that device as a whole, so a teammate who has saved their own look keeps it until they Restore built-in and Save.
 
 ## Adding tube images
 
