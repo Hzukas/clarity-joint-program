@@ -32,10 +32,11 @@ The editor works the same way as the Magnolia Road pitch.
 
 ### Gear menu
 
+- **Page background** sets the color behind the whole page. A chosen color replaces the default dark background and its pink and purple glows; the first swatch (Default) brings them back. It works locked or unlocked, and Undo in the palette, Reset colors, versions, links, and Publish to client all include it. Text that sits on the page itself (header, title, footer) keeps its own color, so after picking a light page color, recolor that text too.
 - **Save version** downloads every edit (text, colors, sizes, fonts, boxes, positions, pricing) as `clarity-joint-<name>.json`. **Load version** applies one in this browser. **Copy link** copies a link that carries the same edits in the address, so it opens with them in any browser.
 - **Publish to client** makes what you see now the look every visitor of the live site gets. It writes `published.json` into this repo through the GitHub API. The first time, paste a GitHub fine-grained token into the menu (repository access to Hzukas/clarity-joint-program, permission Contents: Read and write); it stays in that browser only. Because the publish is a commit made on GitHub, run `git pull` here before your next local change.
 - Without a token: **Save version**, then double-click `publish.cmd` (or run `node publish.js`). It takes the newest `clarity-joint-*.json` from Downloads, writes `published.json`, commits, and pushes. `node publish.js path\to\file.json` publishes a specific file.
-- **Reset colors** clears every text color, fill, border, and badge (Undo brings them back). **Reset all edits** puts every text and look back to the original and cannot be undone.
+- **Reset colors** clears every text color, fill, border, badge, and the page background (Undo brings them back). **Reset all edits** puts every text and look back to the original and cannot be undone.
 
 ### Who sees the controls
 

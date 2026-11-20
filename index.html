@@ -290,6 +290,16 @@
     .gearmenu input[type="password"] { width: 100%; padding: 7px 9px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-size: .8rem; }
     .gearmenu .row { display: flex; gap: 6px; }
     .gearmenu .row button { flex: 1; }
+    .gearmenu .swatches { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .gearmenu .swatches button, .gearmenu .swatches label {
+      position: relative; width: 26px; height: 26px; padding: 0; border-radius: 50%; border: 2px solid rgba(255,255,255,.18);
+      background: var(--sw); cursor: pointer; overflow: hidden; flex: none;
+    }
+    .gearmenu .swatches button.default { background: radial-gradient(circle at 30% 20%, rgba(255,61,127,.55), transparent 60%), radial-gradient(circle at 75% 85%, rgba(138,92,246,.6), transparent 60%), #0b0817; }
+    .gearmenu .swatches label { background: conic-gradient(#ff3d7f, #ff8a1f, #ffc31f, #46c246, #2fa4ff, #8a5cf6, #ff3d7f); }
+    .gearmenu .swatches input[type="color"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; border: 0; padding: 0; }
+    .gearmenu .swatches button:hover, .gearmenu .swatches label:hover { border-color: #fff; }
+    .gearmenu .swatches [aria-pressed="true"] { border-color: var(--pink); box-shadow: 0 0 0 2px var(--panel-2), 0 0 0 4px var(--pink); }
 
     /* Editable text while unlocked */
     [contenteditable="true"] { cursor: text; border-radius: 4px; outline: none; min-width: 2ch; }
@@ -447,6 +457,19 @@
         <div class="gearmenu" id="gearMenu" hidden role="dialog" aria-label="Pricing, versions and publishing">
           <b>Pricing</b>
           <button type="button" id="open-pricing" title="Wholesale per tube at 100% flower and at 100% trim">Price endpoints&hellip;</button>
+          <b>Page background</b>
+          <span class="swatches" id="pageBg">
+            <button type="button" class="default" data-page-bg="" title="Default: dark with pink and purple glows"></button>
+            <button type="button" data-page-bg="#0b0817" style="--sw:#0b0817" title="Dark, no glow"></button>
+            <button type="button" data-page-bg="#000000" style="--sw:#000000" title="Black"></button>
+            <button type="button" data-page-bg="#1a1430" style="--sw:#1a1430" title="Deep purple"></button>
+            <button type="button" data-page-bg="#0e1a2b" style="--sw:#0e1a2b" title="Navy"></button>
+            <button type="button" data-page-bg="#0f1f14" style="--sw:#0f1f14" title="Forest"></button>
+            <button type="button" data-page-bg="#2a2a2e" style="--sw:#2a2a2e" title="Charcoal"></button>
+            <button type="button" data-page-bg="#f6f2ea" style="--sw:#f6f2ea" title="Off-white"></button>
+            <button type="button" data-page-bg="#ffffff" style="--sw:#ffffff" title="White"></button>
+            <label title="Custom page color: click to apply the last picked color, or pick a new one"><input type="color" id="customPage" value="#0e1a2b" aria-label="Custom page background color"></label>
+          </span>
           <b>This browser's edits</b>
           <button type="button" id="saveVer" title="Download every edit on this page (text, colors, sizes, fonts, boxes, pricing) as a version file">Save version</button>
           <label class="loadver" title="Open a saved version file and apply it in this browser"><input type="file" id="loadVer" accept="application/json,.json">Load version</label>
@@ -741,7 +764,7 @@
       var VKEYS = {
         texts: 'cg-text-v1', colors: 'cg-color-v1', sizes: 'cg-size-v1', fonts: 'cg-font-v1',
         fills: 'cg-box-v1', borders: 'cg-border-v1', widths: 'cg-borderw-v1', badges: 'cg-badge-v1',
-        pos: 'cg-pos-v1', dims: 'cg-dim-v1', pricing: 'cg-joint-pricing-v2'
+        pos: 'cg-pos-v1', dims: 'cg-dim-v1', page: 'cg-page-v1', pricing: 'cg-joint-pricing-v2'
       };
       var LIVE = 'https://hzukas.github.io/clarity-joint-program/';
       var TOUCHED = 'cg-touched', PUBSEEN = 'cg-pub-seen', EDKEY = 'cg-editor', OLD_LOOK = 'cg-joint-look-v1';
@@ -1098,7 +1121,7 @@
       var CG = window.CG, VK = CG.VKEYS;
       function readLS(k) { try { return JSON.parse(localStorage.getItem(k) || '{}') || {}; } catch (e) { return {}; } }
       function writeLS(k, o) { try { if (Object.keys(o).length) localStorage.setItem(k, JSON.stringify(o)); else localStorage.removeItem(k); } catch (e) {} }
-      var STORES = ['texts', 'colors', 'sizes', 'fonts', 'fills', 'borders', 'widths', 'badges', 'pos', 'dims'];
+      var STORES = ['texts', 'colors', 'sizes', 'fonts', 'fills', 'borders', 'widths', 'badges', 'pos', 'dims', 'page'];
       var S = {};
       STORES.forEach(function (n) { S[n] = readLS(VK[n]); });
       function persist(n) { writeLS(VK[n], S[n]); }
@@ -1184,6 +1207,7 @@
         boxedTitle(b);
       }
       function setBadge(n, c) { n.style.background = c || ''; }
+      function setPageBg(body, c) { body.style.background = c || ''; }
       function setPos(el, o) {
         if (o && (o.x || o.y)) { el.style.transform = 'translate(' + o.x + 'px,' + o.y + 'px)'; el.classList.add('moved'); }
         else { el.style.transform = ''; el.classList.remove('moved'); }
@@ -1205,6 +1229,7 @@
         border: { store: 'borders', key: bkey,   set: setBorder,                                            word: 'border color' },
         width:  { store: 'widths',  key: bkey,   set: setWidth,                                             word: 'border width' },
         badge:  { store: 'badges',  key: tkey,   set: setBadge,                                             word: 'badge color' },
+        page:   { store: 'page',    key: function () { return 'bg'; }, set: setPageBg,                         word: 'page background' },
         pos:    { store: 'pos',     key: posKey, set: setPos,                                               word: 'position' },
         dim:    { store: 'dims',    key: bkey,   set: setDim,                                               word: 'box size' }
       };
@@ -1268,6 +1293,7 @@
         if (S.dims[k]) setDim(b, S.dims[k]);
       });
       Array.prototype.forEach.call(document.querySelectorAll('[data-box], [data-edit]'), function (el) { var o = S.pos[posKey(el)]; if (o) setPos(el, o); });
+      if (S.page.bg) setPageBg(document.body, S.page.bg);
       matchPanels();
 
       /* ---- typing ---- */
@@ -1360,7 +1386,7 @@
           Object.keys(h.prev).forEach(function (kind) {
             var K = KINDS[kind];
             Object.keys(h.prev[kind]).forEach(function (key) {
-              var el = document.querySelector('[data-' + (K.key === bkey ? 'box' : 'edit') + '="' + key + '"]');
+              var el = elFor(kind, key);
               if (el) store(kind, el, h.prev[kind][key]);
             });
           });
@@ -1391,7 +1417,12 @@
         return isFinite(w) ? Math.round(w) : 1;
       }
       // Keep the palette's own readouts (font, border width) in step with what is selected.
+      function elFor(kind, key) {
+        if (kind === 'page') return document.body;
+        return document.querySelector('[data-' + (KINDS[kind].key === bkey ? 'box' : 'edit') + '="' + key + '"]');
+      }
       function syncBar() {
+        syncPage();
         if (current) fontPick.value = S.fonts[current.dataset.edit] || '';
         var b = boxOf();
         bwOut.textContent = b ? currentWidth(b) + 'px' : '';
@@ -1650,10 +1681,10 @@
       // Start over. Reset colors can be undone; Reset all edits cannot, so it asks first.
       document.getElementById('resetColors').addEventListener('click', function () {
         var snap = {}, n = 0;
-        ['colors', 'fills', 'borders', 'widths', 'badges'].forEach(function (st) {
+        ['colors', 'fills', 'borders', 'widths', 'badges', 'page'].forEach(function (st) {
           var kind = Object.keys(KINDS).filter(function (k) { return KINDS[k].store === st; })[0], K = KINDS[kind];
           Object.keys(S[st]).forEach(function (key) {
-            var el = document.querySelector('[data-' + (K.key === bkey ? 'box' : 'edit') + '="' + key + '"]');
+            var el = elFor(kind, key);
             (snap[kind] = snap[kind] || {})[key] = S[st][key];
             if (el) K.set(el, null);
             n++;
@@ -1675,8 +1706,28 @@
         Array.prototype.forEach.call(document.querySelectorAll('[data-box]'), function (b) {
           setFill(b, null); setBorder(b, null); setWidth(b, null); setPos(b, null); setDim(b, null);
         });
+        setPageBg(document.body, null); syncPage();
         hideBar(); matchPanels(); setGear(false);
       });
+
+      // Page background, in the gear menu. Works locked or unlocked.
+      var pageRow = document.getElementById('pageBg'), customPage = document.getElementById('customPage');
+      function syncPage() {
+        var cur = S.page.bg || '', hit = false;
+        Array.prototype.forEach.call(pageRow.querySelectorAll('button[data-page-bg]'), function (b) {
+          var on = b.dataset.pageBg === cur; if (on) hit = true; b.setAttribute('aria-pressed', String(on));
+        });
+        customPage.parentNode.setAttribute('aria-pressed', String(!!cur && !hit));
+        if (cur && !hit) customPage.value = cur;
+      }
+      function pageChange(v, live) { CG.markTouched(); change('page', document.body, v || null, live); }
+      Array.prototype.forEach.call(pageRow.querySelectorAll('button[data-page-bg]'), function (b) {
+        b.addEventListener('click', function () { pageChange(b.dataset.pageBg); });
+      });
+      customPage.addEventListener('click', function () { pageChange(customPage.value); });
+      customPage.addEventListener('input', function () { pageChange(customPage.value, true); });
+      customPage.addEventListener('change', function () { pageChange(customPage.value); });
+      syncPage();
 
       // For tests and tinkering.
       window.CGEdit = { stores: function () { return JSON.parse(JSON.stringify(S)); }, setLock: setLock, undo: undo };
