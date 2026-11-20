@@ -10,12 +10,16 @@
    crop's background color.
    ========================================================================== */
 window.TUBE_LABELS = [
-  { src: "labels/sticky-fingers-1.png",     name: "Sticky Fingers",         store: "Dead Flowers Dispensary", bg: "#0a0a0a" },
-  { src: "labels/two-moons-two-suns-2.png", name: "Two Suns",               type: "Sativa",                   bg: "#fdfdfe" },
-  { src: "labels/pocket-rockets-2.png",     name: "Pocket Rockets",         store: "Navy",                    bg: "#fefefe" },
-  { src: "labels/aw-certified-1.png",       name: "aW Certified",                                             bg: "#000000" },
-  { src: "labels/two-moons-two-suns-1.png", name: "Two Moons",              type: "Indica",                   bg: "#fdfdfe" },
-  { src: "labels/rolling-stoned-1.png",     name: "Rolling Stoned",         store: "Dead Flowers Dispensary", bg: "#0a0909" },
-  { src: "labels/pocket-rockets-1.png",     name: "Pocket Rockets",         store: "Black",                   bg: "#fefefe" },
-  { src: "labels/pocket-rockets-3.png",     name: "Pocket Rockets",         store: "Cream",                   bg: "#fefefe" }
+  { src: "labels/sticky-fingers-1.png",   name: "Sticky Fingers", store: "Dead Flowers Dispensary", bg: "#0a0a0a" },
+  { src: "labels/pocket-rockets-casino.png", name: "Pocket Rockets",                                   bg: "#f1f0f3" },
+  { src: "labels/inferno.png",            name: "Inferno",                                          bg: "#f1f0f3" },
+  { src: "labels/pocket-rockets-2.png",   name: "Pocket Rockets", store: "Navy",                    bg: "#fefefe" },
+  { src: "labels/rain-forest.png",        name: "Rain Forest",                                      bg: "#f1f0f3" },
+  { src: "labels/aw-certified-1.png",     name: "aW Certified",                                     bg: "#000000" },
+  { src: "labels/og-hydro.png",           name: "OG Hydro",                                         bg: "#f1f0f3" },
+  { src: "labels/rolling-stoned-1.png",   name: "Rolling Stoned", store: "Dead Flowers Dispensary", bg: "#0a0909" },
+  { src: "labels/cosmic-crush.png",       name: "Cosmic Crush",                                     bg: "#f1f0f3" },
+  { src: "labels/pocket-rockets-1.png",   name: "Pocket Rockets", store: "Black",                   bg: "#fefefe" },
+  { src: "labels/golden-hour.png",        name: "Golden Hour",                                      bg: "#f1f0f3" },
+  { src: "labels/pocket-rockets-3.png",   name: "Pocket Rockets", store: "Cream",                   bg: "#fefefe" }
 ];
