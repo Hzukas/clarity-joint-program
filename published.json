@@ -1,0 +1,62 @@
+{
+  "cg": "version",
+  "v": 1,
+  "name": "Published 11/20/2026, 4:41:21 PM",
+  "saved": "2026-11-20T23:41:21.111Z",
+  "texts": {
+    "t:your store s joint": "Your Exclusive preroll.",
+    "t:two joints in a doob tube branded to one": "Two joints in a doob tube, branded to your dispensary. Customers can't find it anywhere else, so they can't price it anywhere else."
+  },
+  "colors": {
+    "t:escape the price war": "#ffffff",
+    "t:why exclusive wins": "#1b1424"
+  },
+  "sizes": {
+    "t:your store s joint": 90,
+    "t:escape the price war": 180,
+    "t:why exclusive wins": 150
+  },
+  "fonts": {
+    "t:why exclusive wins": "\"Oswald\", \"Work Sans\", system-ui, sans-serif"
+  },
+  "fills": {
+    "b:left": "#f6f2ea"
+  },
+  "borders": {
+    "b:title": "transparent",
+    "b:showcase": "#1ffff0",
+    "b:left": "#ff8a1f",
+    "b:right": "#ff8a1f"
+  },
+  "widths": {
+    "b:left": 3,
+    "b:right": 3
+  },
+  "pos": {
+    "t:why exclusive wins": {
+      "x": 0,
+      "y": -22
+    },
+    "b:left": {
+      "x": 0,
+      "y": -4
+    }
+  },
+  "pricing": {
+    "cfg": {
+      "a": {
+        "flower": 4,
+        "trim": 2
+      },
+      "b": {
+        "flower": 6,
+        "trim": 3
+      }
+    },
+    "blend": 100,
+    "otd": {
+      "a": "11",
+      "b": "6.20"
+    }
+  }
+}
